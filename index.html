@@ -1,94 +1,116 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Homework Helper</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        #chat {
-            max-width: 400px;
-            margin: auto;
-            padding: 15px;
-            border: 2px solid #002855;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        #messages {
-            height: 320px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-            background: #fff;
-        }
-        input[type="text"], input[type="file"] {
-            width: 75%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #002855;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 14px;
-            background: #ffb300;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #cc8c00;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Homework Helper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    #chat {
+      max-width: 400px;
+      margin: auto;
+      padding: 15px;
+      border: 2px solid #002855;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #messages {
+      height: 320px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .message {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+    .user {
+      align-self: flex-start;
+      background-color: #e1f5fe;
+    }
+    .ai {
+      align-self: flex-end;
+      background-color: #fff3e0;
+    }
+    input[type="text"] {
+      width: 75%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #002855;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 14px;
+      background: #ffb300;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #cc8c00;
+    }
+  </style>
 </head>
 <body>
-    <div id="chat">
-        <div id="messages"></div>
-        <input type="text" id="userInput" placeholder="Ask a homework question..."><br>
-        <input type="file" id="imageInput" accept="image/*"><br>
-        <button onclick="sendMessage()">Send</button>
-    </div>
+  <div id="chat">
+    <div id="messages"></div>
+    <input type="text" id="userInput" placeholder="Ask a homework question..."><br>
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-    <script>
-        async function sendMessage() {
-            const userInput = document.getElementById("userInput").value.trim();
-            const imageInput = document.getElementById("imageInput").files[0];
-            const messages = document.getElementById("messages");
+  <script>
+    async function sendMessage() {
+      const userInput = document.getElementById("userInput").value.trim();
+      const messages = document.getElementById("messages");
 
-            if (!userInput && !imageInput) return;
+      if (!userInput) return;
 
-            messages.innerHTML += `<p><b>You:</b> ${userInput || '[Image uploaded]'}</p>`;
-            document.getElementById("userInput").value = "";
-            document.getElementById("imageInput").value = "";
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = userInput;
+      messages.appendChild(userMsg);
+      document.getElementById("userInput").value = "";
 
-            const formData = new FormData();
-            formData.append("message", userInput);
-            if (imageInput) {
-                formData.append("image", imageInput);
-            }
+      try {
+        const response = await fetch("https://sweet-jumpy-broker.glitch.me/homework", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: userInput })
+        });
 
-            try {
-                const response = await fetch("https://sweet-jumpy-broker.glitch.me/homework", {
-                    method: "POST",
-                    body: formData
-                });
+        const data = await response.json();
 
-                const data = await response.json();
-                messages.innerHTML += `<p><b>AI:</b> ${data.reply}</p>`;
-                messages.scrollTop = messages.scrollHeight;
-            } catch (err) {
-                console.error("Error:", err);
-                messages.innerHTML += `<p><b>AI:</b> Sorry, something went wrong. Please try again.</p>`;
-            }
-        }
-    </script>
+        const aiMsg = document.createElement("div");
+        aiMsg.className = "message ai";
+        aiMsg.textContent = data.reply;
+        messages.appendChild(aiMsg);
+        messages.scrollTop = messages.scrollHeight;
+      } catch (err) {
+        console.error("Error:", err);
+        const errMsg = document.createElement("div");
+        errMsg.className = "message ai";
+        errMsg.textContent = "Sorry, something went wrong. Please try again.";
+        messages.appendChild(errMsg);
+      }
+    }
+  </script>
 </body>
 </html>
