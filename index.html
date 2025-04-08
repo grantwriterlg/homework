@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Homework Helper</title>
+  <title>Homework Helper Translator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -12,7 +12,7 @@
       background-color: #f4f4f4;
     }
     #chat {
-      max-width: 400px;
+      max-width: 420px;
       margin: auto;
       padding: 15px;
       border: 2px solid #002855;
@@ -21,7 +21,7 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     #messages {
-      height: 320px;
+      height: 300px;
       overflow-y: auto;
       border-bottom: 1px solid #ccc;
       padding: 10px;
@@ -46,7 +46,7 @@
       background-color: #fff3e0;
     }
     input[type="text"], select {
-      width: 75%;
+      width: 80%;
       padding: 10px;
       margin: 5px 0;
       border: 1px solid #002855;
@@ -75,17 +75,27 @@
 </head>
 <body>
   <div id="chat">
-    <select id="languageSelect">
+    <label>Speak/Type Language:</label>
+    <select id="inputLang">
+      <option value="english">English</option>
+      <option value="spanish">Español</option>
+      <option value="arabic">العربية</option>
+    </select><br>
+
+    <label>Response Language:</label>
+    <select id="responseLang">
       <option value="english">English</option>
       <option value="spanish">Español</option>
       <option value="arabic">العربية</option>
     </select><br>
 
     <div id="messages"></div>
-    <input type="text" id="userInput" placeholder="Ask a homework question..." /><br>
+    <input type="text" id="userInput" placeholder="Ask your question..." /><br>
     <button onclick="sendMessage()">Send</button>
     <button onclick="clearChat()">Clear Chat</button><br>
-    <button id="voiceBtn">🎙️ Hold to Ask</button>
+    <button id="voiceBtn">🎙️ Hold to Ask</button><br>
+    <button onclick="stopSpeaking()">🛑 Stop</button>
+    <button onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
   </div>
 
   <script>
@@ -93,30 +103,25 @@
     const voiceBtn = document.getElementById("voiceBtn");
     let recognition;
 
-    const langSettings = {
-      english: {
-        speakLang: "en-US",
-        system: "You are a helpful tutor that only responds in English. Explain clearly and simply."
-      },
-      spanish: {
-        speakLang: "es-ES",
-        system: "Eres un tutor útil que solo responde en español. Explica de forma clara y sencilla."
-      },
-      arabic: {
-        speakLang: "ar-SA",
-        system: "أنت معلم مفيد يجيب فقط باللغة العربية. اشرح بطريقة واضحة وبسيطة."
-      }
+    const langMap = {
+      english: { code: "en-US", name: "English" },
+      spanish: { code: "es-ES", name: "Spanish" },
+      arabic:  { code: "ar-SA", name: "Arabic" }
     };
-
-    function getSelectedLanguage() {
-      return document.getElementById("languageSelect").value;
-    }
 
     let chatHistory = [];
 
+    function getLang(key) {
+      return langMap[document.getElementById(key).value];
+    }
+
+    function getSystemPrompt() {
+      const resLang = getLang("responseLang");
+      return `You are a helpful tutor. Translate or explain clearly in ${resLang.name}.`;
+    }
+
     function resetChatHistory() {
-      const lang = getSelectedLanguage();
-      chatHistory = [{ role: "system", content: langSettings[lang].system }];
+      chatHistory = [{ role: "system", content: getSystemPrompt() }];
     }
 
     resetChatHistory();
@@ -161,16 +166,16 @@
       resetChatHistory();
     }
 
-    // 🎤 Hold-to-Talk Button
+    // 🎙️ Hold-to-Talk
     voiceBtn.addEventListener("mousedown", startListening);
     voiceBtn.addEventListener("mouseup", stopListening);
     voiceBtn.addEventListener("touchstart", startListening);
     voiceBtn.addEventListener("touchend", stopListening);
 
     function startListening() {
-      const lang = langSettings[getSelectedLanguage()];
+      const inputLang = getLang("inputLang");
       recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = lang.speakLang;
+      recognition.lang = inputLang.code;
       recognition.interimResults = false;
 
       recognition.onresult = function (event) {
@@ -195,19 +200,17 @@
       }
     }
 
-    // ✅ Dynamic Speech Synth with voice fallback
     function speak(text) {
-      const lang = langSettings[getSelectedLanguage()];
+      const resLang = getLang("responseLang");
       const synth = window.speechSynthesis;
 
       function speakNow() {
         const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = lang.speakLang;
-
-        const voice = synth.getVoices().find(v => v.lang === lang.speakLang);
+        utter.lang = resLang.code;
+        const voice = synth.getVoices().find(v => v.lang === resLang.code);
         if (voice) utter.voice = voice;
 
-        synth.cancel(); // Clear queue
+        synth.cancel();
         synth.speak(utter);
       }
 
@@ -218,7 +221,22 @@
       }
     }
 
-    document.getElementById("languageSelect").addEventListener("change", () => {
+    function stopSpeaking() {
+      window.speechSynthesis.cancel();
+    }
+
+    function togglePause() {
+      const synth = window.speechSynthesis;
+      if (synth.speaking) {
+        synth.paused ? synth.resume() : synth.pause();
+      }
+    }
+
+    document.getElementById("inputLang").addEventListener("change", () => {
+      clearChat();
+    });
+
+    document.getElementById("responseLang").addEventListener("change", () => {
       clearChat();
     });
   </script>
