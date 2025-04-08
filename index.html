@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Homework Helper</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
       border: 2px solid #002855;
       background: white;
       border-radius: 8px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     #messages {
       height: 320px;
@@ -65,6 +65,12 @@
     button:hover {
       background: #cc8c00;
     }
+    #voiceBtn {
+      background-color: #4caf50;
+    }
+    #voiceBtn.recording {
+      background-color: #d32f2f;
+    }
   </style>
 </head>
 <body>
@@ -72,58 +78,64 @@
     <select id="languageSelect">
       <option value="english">English</option>
       <option value="spanish">Español</option>
+      <option value="arabic">العربية</option>
     </select><br>
 
     <div id="messages"></div>
-    <input type="text" id="userInput" placeholder="Ask a homework question..."><br>
+    <input type="text" id="userInput" placeholder="Ask a homework question..." /><br>
     <button onclick="sendMessage()">Send</button>
-    <button onclick="clearChat()">Clear Chat</button>
+    <button onclick="clearChat()">Clear Chat</button><br>
+    <button id="voiceBtn">🎙️ Hold to Ask</button>
   </div>
 
   <script>
     const messages = document.getElementById("messages");
+    const voiceBtn = document.getElementById("voiceBtn");
+    let recognition;
 
-    // This will update dynamically based on selected language
-    let chatHistory = [];
-
-    function getSystemPrompt(language) {
-      if (language === "spanish") {
-        return {
-          role: "system",
-          content:
-            "Eres un tutor útil y amigable que SIEMPRE responde en español. Explica las tareas de manera clara, sencilla y educativa."
-        };
-      } else {
-        return {
-          role: "system",
-          content:
-            "You are a helpful and friendly tutor who ALWAYS responds in English. Explain homework questions clearly and simply."
-        };
+    const langSettings = {
+      english: {
+        speakLang: "en-US",
+        system: "You are a helpful tutor that only responds in English. Explain clearly and simply.",
+      },
+      spanish: {
+        speakLang: "es-ES",
+        system: "Eres un tutor útil que solo responde en español. Explica de forma clara y sencilla.",
+      },
+      arabic: {
+        speakLang: "ar-SA",
+        system: "أنت معلم مفيد يجيب فقط باللغة العربية. اشرح بطريقة واضحة وبسيطة.",
       }
-    }
+    };
 
     function getSelectedLanguage() {
       return document.getElementById("languageSelect").value;
     }
 
+    let chatHistory = [];
+
     function resetChatHistory() {
-      const language = getSelectedLanguage();
-      chatHistory = [getSystemPrompt(language)];
+      const lang = getSelectedLanguage();
+      chatHistory = [{ role: "system", content: langSettings[lang].system }];
     }
 
-    resetChatHistory(); // initialize on load
+    resetChatHistory();
+
+    function addMessage(text, role) {
+      const msg = document.createElement("div");
+      msg.className = "message " + role;
+      msg.textContent = text;
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
 
     async function sendMessage() {
       const userInput = document.getElementById("userInput").value.trim();
       if (!userInput) return;
 
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.textContent = userInput;
-      messages.appendChild(userMsg);
-      document.getElementById("userInput").value = "";
-
+      addMessage(userInput, "user");
       chatHistory.push({ role: "user", content: userInput });
+      document.getElementById("userInput").value = "";
 
       try {
         const response = await fetch("https://sweet-jumpy-broker.glitch.me/homework", {
@@ -133,26 +145,61 @@
         });
 
         const data = await response.json();
+        const reply = data.reply;
 
-        const aiMsg = document.createElement("div");
-        aiMsg.className = "message ai";
-        aiMsg.textContent = data.reply;
-        messages.appendChild(aiMsg);
-        messages.scrollTop = messages.scrollHeight;
-
-        chatHistory.push({ role: "assistant", content: data.reply });
+        addMessage(reply, "ai");
+        speak(reply);
+        chatHistory.push({ role: "assistant", content: reply });
       } catch (err) {
         console.error("Error:", err);
-        const errMsg = document.createElement("div");
-        errMsg.className = "message ai";
-        errMsg.textContent = "Something went wrong. Please try again.";
-        messages.appendChild(errMsg);
+        addMessage("Something went wrong. Please try again.", "ai");
       }
     }
 
     function clearChat() {
       messages.innerHTML = "";
       resetChatHistory();
+    }
+
+    // 🎤 Hold-to-Talk Button
+    voiceBtn.addEventListener("mousedown", startListening);
+    voiceBtn.addEventListener("mouseup", stopListening);
+    voiceBtn.addEventListener("touchstart", startListening);
+    voiceBtn.addEventListener("touchend", stopListening);
+
+    function startListening() {
+      const lang = langSettings[getSelectedLanguage()];
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = lang.speakLang;
+      recognition.interimResults = false;
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("userInput").value = transcript;
+        sendMessage();
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Voice error:", event.error);
+        addMessage("Voice error: " + event.error, "ai");
+      };
+
+      voiceBtn.classList.add("recording");
+      recognition.start();
+    }
+
+    function stopListening() {
+      if (recognition) {
+        recognition.stop();
+        voiceBtn.classList.remove("recording");
+      }
+    }
+
+    function speak(text) {
+      const lang = langSettings[getSelectedLanguage()];
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = lang.speakLang;
+      window.speechSynthesis.speak(utter);
     }
 
     document.getElementById("languageSelect").addEventListener("change", () => {
