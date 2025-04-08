@@ -144,6 +144,7 @@
     const messages = document.getElementById("chatArea");
     const voiceBtn = document.getElementById("voiceBtn");
     let recognition;
+    let isPausedManually = false;
 
     const langMap = {
       english: { code: "en-US", name: "English" },
@@ -206,7 +207,7 @@
       resetChatHistory();
     }
 
-    // 🔄 Update only the system prompt when changing languages (don't clear chat)
+    // Update only the system prompt without clearing chat
     function updatePromptOnly() {
       if (chatHistory.length > 0 && chatHistory[0].role === "system") {
         chatHistory[0].content = getSystemPrompt();
@@ -250,7 +251,6 @@
       }
     }
 
-    // 🗣️ Speak output
     function speak(text) {
       const resLang = getLang("responseLang");
       const synth = window.speechSynthesis;
@@ -268,6 +268,7 @@
         else console.warn("No voice found for", resLang.code);
 
         synth.cancel();
+        isPausedManually = false;
         synth.speak(utter);
       }
 
@@ -280,12 +281,19 @@
 
     function stopSpeaking() {
       window.speechSynthesis.cancel();
+      isPausedManually = false;
     }
 
     function togglePause() {
       const synth = window.speechSynthesis;
       if (synth.speaking) {
-        synth.paused ? synth.resume() : synth.pause();
+        if (synth.paused) {
+          synth.resume();
+          isPausedManually = false;
+        } else {
+          synth.pause();
+          isPausedManually = true;
+        }
       }
     }
   </script>
