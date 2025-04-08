@@ -96,15 +96,15 @@
     const langSettings = {
       english: {
         speakLang: "en-US",
-        system: "You are a helpful tutor that only responds in English. Explain clearly and simply.",
+        system: "You are a helpful tutor that only responds in English. Explain clearly and simply."
       },
       spanish: {
         speakLang: "es-ES",
-        system: "Eres un tutor útil que solo responde en español. Explica de forma clara y sencilla.",
+        system: "Eres un tutor útil que solo responde en español. Explica de forma clara y sencilla."
       },
       arabic: {
         speakLang: "ar-SA",
-        system: "أنت معلم مفيد يجيب فقط باللغة العربية. اشرح بطريقة واضحة وبسيطة.",
+        system: "أنت معلم مفيد يجيب فقط باللغة العربية. اشرح بطريقة واضحة وبسيطة."
       }
     };
 
@@ -195,11 +195,27 @@
       }
     }
 
+    // ✅ Dynamic Speech Synth with voice fallback
     function speak(text) {
       const lang = langSettings[getSelectedLanguage()];
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = lang.speakLang;
-      window.speechSynthesis.speak(utter);
+      const synth = window.speechSynthesis;
+
+      function speakNow() {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = lang.speakLang;
+
+        const voice = synth.getVoices().find(v => v.lang === lang.speakLang);
+        if (voice) utter.voice = voice;
+
+        synth.cancel(); // Clear queue
+        synth.speak(utter);
+      }
+
+      if (synth.getVoices().length === 0) {
+        synth.onvoiceschanged = () => speakNow();
+      } else {
+        speakNow();
+      }
     }
 
     document.getElementById("languageSelect").addEventListener("change", () => {
