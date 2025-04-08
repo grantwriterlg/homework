@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ayudante de Tareas</title>
+  <title>Homework Helper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -45,7 +45,7 @@
       align-self: flex-end;
       background-color: #fff3e0;
     }
-    input[type="text"] {
+    input[type="text"], select {
       width: 75%;
       padding: 10px;
       margin: 5px 0;
@@ -69,17 +69,49 @@
 </head>
 <body>
   <div id="chat">
+    <select id="languageSelect">
+      <option value="english">English</option>
+      <option value="spanish">Español</option>
+    </select><br>
+
     <div id="messages"></div>
-    <input type="text" id="userInput" placeholder="Haz una pregunta sobre tu tarea..."><br>
-    <button onclick="sendMessage()">Enviar</button>
-    <button onclick="clearChat()">Limpiar Chat</button>
+    <input type="text" id="userInput" placeholder="Ask a homework question..."><br>
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="clearChat()">Clear Chat</button>
   </div>
 
   <script>
     const messages = document.getElementById("messages");
-    const chatHistory = [
-      { role: "system", content: "Eres un tutor útil que responde preguntas de tarea de forma clara y en español." }
-    ];
+
+    // This will update dynamically based on selected language
+    let chatHistory = [];
+
+    function getSystemPrompt(language) {
+      if (language === "spanish") {
+        return {
+          role: "system",
+          content:
+            "Eres un tutor útil y amigable que SIEMPRE responde en español. Explica las tareas de manera clara, sencilla y educativa."
+        };
+      } else {
+        return {
+          role: "system",
+          content:
+            "You are a helpful and friendly tutor who ALWAYS responds in English. Explain homework questions clearly and simply."
+        };
+      }
+    }
+
+    function getSelectedLanguage() {
+      return document.getElementById("languageSelect").value;
+    }
+
+    function resetChatHistory() {
+      const language = getSelectedLanguage();
+      chatHistory = [getSystemPrompt(language)];
+    }
+
+    resetChatHistory(); // initialize on load
 
     async function sendMessage() {
       const userInput = document.getElementById("userInput").value.trim();
@@ -113,15 +145,19 @@
         console.error("Error:", err);
         const errMsg = document.createElement("div");
         errMsg.className = "message ai";
-        errMsg.textContent = "Lo siento, algo salió mal. Intenta de nuevo.";
+        errMsg.textContent = "Something went wrong. Please try again.";
         messages.appendChild(errMsg);
       }
     }
 
     function clearChat() {
-      chatHistory.length = 1; // Reset to only system prompt
       messages.innerHTML = "";
+      resetChatHistory();
     }
+
+    document.getElementById("languageSelect").addEventListener("change", () => {
+      clearChat();
+    });
   </script>
 </body>
 </html>
