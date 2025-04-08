@@ -7,99 +7,143 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-    }
-    #chat {
-      max-width: 420px;
-      margin: auto;
-      padding: 15px;
-      border: 2px solid #002855;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    #messages {
-      height: 300px;
-      overflow-y: auto;
-      border-bottom: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-      background: #fff;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: center;
     }
+
+    #container {
+      display: flex;
+      flex-direction: row;
+      max-width: 900px;
+      width: 100%;
+      margin: 30px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #controls {
+      width: 40%;
+      background: #002855;
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #controls select,
+    #controls input[type="text"],
+    #controls button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      box-sizing: border-box;
+    }
+
+    #controls select,
+    #controls input[type="text"] {
+      border: 1px solid #ccc;
+      color: #000;
+    }
+
+    #controls button {
+      background: #ffb300;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #controls button:hover {
+      background: #cc8c00;
+    }
+
+    #voiceBtn {
+      background-color: #4caf50;
+    }
+
+    #voiceBtn.recording {
+      background-color: #d32f2f;
+    }
+
+    #chatArea {
+      width: 60%;
+      padding: 20px;
+      overflow-y: auto;
+      height: 500px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-left: 1px solid #ccc;
+    }
+
     .message {
       max-width: 80%;
-      padding: 8px 12px;
+      padding: 10px 15px;
       border-radius: 12px;
+      font-size: 16px;
       line-height: 1.4;
     }
+
     .user {
       align-self: flex-start;
       background-color: #e1f5fe;
     }
+
     .ai {
       align-self: flex-end;
       background-color: #fff3e0;
     }
-    input[type="text"], select {
-      width: 80%;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #002855;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 14px;
-      background: #ffb300;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-      font-weight: bold;
-      margin: 5px;
-    }
-    button:hover {
-      background: #cc8c00;
-    }
-    #voiceBtn {
-      background-color: #4caf50;
-    }
-    #voiceBtn.recording {
-      background-color: #d32f2f;
+
+    @media screen and (max-width: 768px) {
+      #container {
+        flex-direction: column;
+      }
+      #controls, #chatArea {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="chat">
-    <label>Speak/Type Language:</label>
-    <select id="inputLang">
-      <option value="english">English</option>
-      <option value="spanish">Español</option>
-      <option value="arabic">العربية</option>
-    </select><br>
+  <div id="container">
+    <div id="controls">
+      <label for="inputLang">Speak/Type Language:</label>
+      <select id="inputLang">
+        <option value="english">English</option>
+        <option value="spanish">Español</option>
+        <option value="arabic">العربية</option>
+      </select>
 
-    <label>Response Language:</label>
-    <select id="responseLang">
-      <option value="english">English</option>
-      <option value="spanish">Español</option>
-      <option value="arabic">العربية</option>
-    </select><br>
+      <label for="responseLang">Response Language:</label>
+      <select id="responseLang">
+        <option value="english">English</option>
+        <option value="spanish">Español</option>
+        <option value="arabic">العربية</option>
+      </select>
 
-    <div id="messages"></div>
-    <input type="text" id="userInput" placeholder="Ask your question..." /><br>
-    <button onclick="sendMessage()">Send</button>
-    <button onclick="clearChat()">Clear Chat</button><br>
-    <button id="voiceBtn">🎙️ Hold to Ask</button><br>
-    <button onclick="stopSpeaking()">🛑 Stop</button>
-    <button onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
+      <input type="text" id="userInput" placeholder="Ask your question..." />
+      <button onclick="sendMessage()">Send</button>
+      <button onclick="clearChat()">Clear Chat</button>
+      <button id="voiceBtn">🎙️ Hold to Ask</button>
+      <button onclick="stopSpeaking()">🛑 Stop</button>
+      <button onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
+    </div>
+
+    <div id="chatArea"></div>
   </div>
 
   <script>
-    const messages = document.getElementById("messages");
+    const messages = document.getElementById("chatArea");
     const voiceBtn = document.getElementById("voiceBtn");
     let recognition;
 
@@ -111,13 +155,12 @@
 
     let chatHistory = [];
 
-    function getLang(key) {
-      return langMap[document.getElementById(key).value];
+    function getLang(id) {
+      return langMap[document.getElementById(id).value];
     }
 
     function getSystemPrompt() {
-      const resLang = getLang("responseLang");
-      return `You are a helpful tutor. Translate or explain clearly in ${resLang.name}.`;
+      return `You are a helpful tutor. Translate or explain clearly in ${getLang("responseLang").name}.`;
     }
 
     function resetChatHistory() {
@@ -135,11 +178,11 @@
     }
 
     async function sendMessage() {
-      const userInput = document.getElementById("userInput").value.trim();
-      if (!userInput) return;
+      const input = document.getElementById("userInput").value.trim();
+      if (!input) return;
 
-      addMessage(userInput, "user");
-      chatHistory.push({ role: "user", content: userInput });
+      addMessage(input, "user");
+      chatHistory.push({ role: "user", content: input });
       document.getElementById("userInput").value = "";
 
       try {
@@ -166,7 +209,6 @@
       resetChatHistory();
     }
 
-    // 🎙️ Hold-to-Talk
     voiceBtn.addEventListener("mousedown", startListening);
     voiceBtn.addEventListener("mouseup", stopListening);
     voiceBtn.addEventListener("touchstart", startListening);
@@ -232,13 +274,8 @@
       }
     }
 
-    document.getElementById("inputLang").addEventListener("change", () => {
-      clearChat();
-    });
-
-    document.getElementById("responseLang").addEventListener("change", () => {
-      clearChat();
-    });
+    document.getElementById("inputLang").addEventListener("change", clearChat);
+    document.getElementById("responseLang").addEventListener("change", clearChat);
   </script>
 </body>
 </html>
