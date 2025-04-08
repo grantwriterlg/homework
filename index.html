@@ -2,76 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Homework Helper Translator</title>
+  <title>Homework Helper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, Tahoma, 'Segoe UI', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f4f4f4;
+      background: linear-gradient(to right, #f0f9ff, #fff7ed);
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+      width: 100%;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     #container {
       display: flex;
       flex-direction: row;
-      max-width: 900px;
+      max-width: 1000px;
       width: 100%;
-      margin: 30px;
-      background: white;
+      margin-top: 30px;
       border-radius: 10px;
+      background: white;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     #controls {
       width: 40%;
-      background: #002855;
+      background: #004080;
       color: white;
-      padding: 20px;
+      padding: 24px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
-    #controls select,
-    #controls input[type="text"],
-    #controls button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      box-sizing: border-box;
+    #controls label {
+      font-weight: bold;
+      font-size: 14px;
     }
 
     #controls select,
     #controls input[type="text"] {
-      border: 1px solid #ccc;
-      color: #000;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 4px;
     }
 
     #controls button {
-      background: #ffb300;
-      color: white;
+      font-size: 16px;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     #controls button:hover {
-      background: #cc8c00;
+      opacity: 0.9;
     }
 
-    #voiceBtn {
-      background-color: #4caf50;
-    }
+    #sendBtn { background: #ffb300; color: white; }
+    #clearBtn { background: #ff7043; color: white; }
+    #voiceBtn { background: #4caf50; color: white; }
+    #stopBtn { background: #d32f2f; color: white; }
+    #pauseBtn { background: #1976d2; color: white; }
 
     #voiceBtn.recording {
-      background-color: #d32f2f;
+      background-color: #c62828 !important;
     }
 
     #chatArea {
@@ -83,25 +99,28 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      border-left: 1px solid #ccc;
+      background: #f9f9f9;
     }
 
     .message {
       max-width: 80%;
-      padding: 10px 15px;
-      border-radius: 12px;
+      padding: 14px 18px;
+      border-radius: 18px;
       font-size: 16px;
-      line-height: 1.4;
+      line-height: 1.5;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
 
     .user {
       align-self: flex-start;
-      background-color: #e1f5fe;
+      background-color: #e0f7fa;
+      border-top-left-radius: 0;
     }
 
     .ai {
       align-self: flex-end;
       background-color: #fff3e0;
+      border-top-right-radius: 0;
     }
 
     @media screen and (max-width: 768px) {
@@ -115,26 +134,32 @@
   </style>
 </head>
 <body>
+  <header>🎓 Homework Helper</header>
+
   <div id="container">
     <div id="controls">
-      <label for="inputLang">Speak/Type Language:</label>
-      <select id="inputLang">
-        <option value="english">English</option>
-        <option value="spanish">Español</option>
-      </select>
+      <div>
+        <label for="inputLang">🗣️ Speak/Type Language:</label>
+        <select id="inputLang">
+          <option value="english">English</option>
+          <option value="spanish">Español</option>
+        </select>
+      </div>
 
-      <label for="responseLang">Response Language:</label>
-      <select id="responseLang">
-        <option value="english">English</option>
-        <option value="spanish">Español</option>
-      </select>
+      <div>
+        <label for="responseLang">🔊 Response Language:</label>
+        <select id="responseLang">
+          <option value="english">English</option>
+          <option value="spanish">Español</option>
+        </select>
+      </div>
 
-      <input type="text" id="userInput" placeholder="Ask your question..." />
-      <button onclick="sendMessage()">Send</button>
-      <button onclick="clearChat()">Clear Chat</button>
-      <button id="voiceBtn">🎙️ Hold to Ask</button>
-      <button onclick="stopSpeaking()">🛑 Stop</button>
-      <button onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
+      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <button id="sendBtn" onclick="sendMessage()">📨 Send</button>
+      <button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
+      <button id="voiceBtn">🎙️ Hold to Speak</button>
+      <button id="stopBtn" onclick="stopSpeaking()">🛑 Stop Speaking</button>
+      <button id="pauseBtn" onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
     </div>
 
     <div id="chatArea"></div>
@@ -145,6 +170,7 @@
     const voiceBtn = document.getElementById("voiceBtn");
     let recognition;
     let isPausedManually = false;
+    let lastInputWasVoice = false;
 
     const langMap = {
       english: { code: "en-US", name: "English" },
@@ -194,8 +220,9 @@
         const reply = data.reply;
 
         addMessage(reply, "ai");
-        speak(reply);
+        if (lastInputWasVoice) speak(reply);
         chatHistory.push({ role: "assistant", content: reply });
+        lastInputWasVoice = false;
       } catch (err) {
         console.error("Error:", err);
         addMessage("Something went wrong. Please try again.", "ai");
@@ -207,7 +234,6 @@
       resetChatHistory();
     }
 
-    // Update only the system prompt without clearing chat
     function updatePromptOnly() {
       if (chatHistory.length > 0 && chatHistory[0].role === "system") {
         chatHistory[0].content = getSystemPrompt();
@@ -224,6 +250,7 @@
     voiceBtn.addEventListener("touchend", stopListening);
 
     function startListening() {
+      lastInputWasVoice = true;
       const inputLang = getLang("inputLang");
       recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = inputLang.code;
