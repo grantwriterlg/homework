@@ -206,6 +206,16 @@
       resetChatHistory();
     }
 
+    // 🔄 Update only the system prompt when changing languages (don't clear chat)
+    function updatePromptOnly() {
+      if (chatHistory.length > 0 && chatHistory[0].role === "system") {
+        chatHistory[0].content = getSystemPrompt();
+      }
+    }
+
+    document.getElementById("inputLang").addEventListener("change", updatePromptOnly);
+    document.getElementById("responseLang").addEventListener("change", updatePromptOnly);
+
     // 🎤 Voice-to-Text
     voiceBtn.addEventListener("mousedown", startListening);
     voiceBtn.addEventListener("mouseup", stopListening);
@@ -278,9 +288,6 @@
         synth.paused ? synth.resume() : synth.pause();
       }
     }
-
-    document.getElementById("inputLang").addEventListener("change", clearChat);
-    document.getElementById("responseLang").addEventListener("change", clearChat);
   </script>
 </body>
 </html>
