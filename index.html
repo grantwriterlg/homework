@@ -121,14 +121,12 @@
       <select id="inputLang">
         <option value="english">English</option>
         <option value="spanish">Español</option>
-        <option value="arabic">العربية</option>
       </select>
 
       <label for="responseLang">Response Language:</label>
       <select id="responseLang">
         <option value="english">English</option>
         <option value="spanish">Español</option>
-        <option value="arabic">العربية</option>
       </select>
 
       <input type="text" id="userInput" placeholder="Ask your question..." />
@@ -149,8 +147,7 @@
 
     const langMap = {
       english: { code: "en-US", name: "English" },
-      spanish: { code: "es-ES", name: "Spanish" },
-      arabic:  { code: "ar-SA", name: "Arabic" }
+      spanish: { code: "es-ES", name: "Spanish" }
     };
 
     let chatHistory = [];
@@ -173,15 +170,6 @@
       const msg = document.createElement("div");
       msg.className = "message " + role;
       msg.textContent = text;
-
-      // Make Arabic messages RTL
-      const resLang = getLang("responseLang");
-      if (role === "ai" && resLang.code.startsWith("ar")) {
-        msg.style.direction = "rtl";
-        msg.style.textAlign = "right";
-        msg.style.fontFamily = "Tahoma, 'Segoe UI', sans-serif";
-      }
-
       messages.appendChild(msg);
       messages.scrollTop = messages.scrollHeight;
     }
