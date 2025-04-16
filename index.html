@@ -219,7 +219,7 @@
     }
 
     function updateUsageNotice() {
-      const left = 10 - getUsageCount();
+      const left = 3 - getUsageCount();
       const notice = document.getElementById("usageNotice");
       if (hasPaid()) {
         notice.textContent = "✅ Unlimited access unlocked!";
@@ -231,7 +231,7 @@
     }
 
     async function sendMessage() {
-      if (!hasPaid() && getUsageCount() >= 10) {
+      if (!hasPaid() && getUsageCount() >= 3) {
         const confirmUpgrade = confirm("🎓 You've used your 10 free messages. Upgrade to unlock unlimited access for $9.95/month?");
         if (confirmUpgrade) {
           window.location.href = "https://buy.stripe.com/5kAeW0f9vbki8ww8ww";
