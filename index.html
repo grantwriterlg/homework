@@ -218,17 +218,17 @@
       return params.get("paid") === "true";
     }
 
-    function updateUsageNotice() {
-      const left = 3 - getUsageCount();
-      const notice = document.getElementById("usageNotice");
-      if (hasPaid()) {
-        notice.textContent = "✅ Unlimited access unlocked!";
-      } else if (left > 0) {
-        notice.textContent = `🆓 Free messages left: ${left}`;
-      } else {
-        notice.textContent = "🔒 Limit reached. Click to upgrade.";
-      }
-    }
+function updateUsageNotice() {
+  const left = 3 - getUsageCount();
+  const notice = document.getElementById("usageNotice");
+  if (hasPaid()) {
+    notice.innerHTML = "✅ Unlimited access unlocked!";
+  } else if (left > 0) {
+    notice.textContent = `🆓 Free messages left: ${left}`;
+  } else {
+    notice.innerHTML = `🔒 Limit reached. <a href="https://buy.stripe.com/5kAeW0f9vbki8ww8ww" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
+  }
+}
 
     async function sendMessage() {
       if (!hasPaid() && getUsageCount() >= 3) {
