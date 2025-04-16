@@ -160,6 +160,7 @@
       <button id="voiceBtn">🎙️ Hold to Speak</button>
       <button id="stopBtn" onclick="stopSpeaking()">🛑 Stop Speaking</button>
       <button id="pauseBtn" onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
+      <div id="usageNotice" style="font-weight:bold;"></div>
     </div>
 
     <div id="chatArea"></div>
@@ -201,7 +202,43 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
+    function getUsageCount() {
+      return parseInt(localStorage.getItem("usageCount") || "0");
+    }
+
+    function incrementUsage() {
+      let count = getUsageCount() + 1;
+      localStorage.setItem("usageCount", count);
+      updateUsageNotice();
+      return count;
+    }
+
+    function hasPaid() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("paid") === "true";
+    }
+
+    function updateUsageNotice() {
+      const left = 10 - getUsageCount();
+      const notice = document.getElementById("usageNotice");
+      if (hasPaid()) {
+        notice.textContent = "✅ Unlimited access unlocked!";
+      } else if (left > 0) {
+        notice.textContent = `🆓 Free messages left: ${left}`;
+      } else {
+        notice.textContent = "🔒 Limit reached. Click to upgrade.";
+      }
+    }
+
     async function sendMessage() {
+      if (!hasPaid() && getUsageCount() >= 10) {
+        const confirmUpgrade = confirm("🎓 You've used your 10 free messages. Upgrade to unlock unlimited access for $9.95/month?");
+        if (confirmUpgrade) {
+          window.location.href = "https://buy.stripe.com/5kAeW0f9vbki8ww8ww";
+        }
+        return;
+      }
+
       const input = document.getElementById("userInput").value.trim();
       if (!input) return;
 
@@ -223,6 +260,8 @@
         if (lastInputWasVoice) speak(reply);
         chatHistory.push({ role: "assistant", content: reply });
         lastInputWasVoice = false;
+
+        incrementUsage();
       } catch (err) {
         console.error("Error:", err);
         addMessage("Something went wrong. Please try again.", "ai");
@@ -243,7 +282,6 @@
     document.getElementById("inputLang").addEventListener("change", updatePromptOnly);
     document.getElementById("responseLang").addEventListener("change", updatePromptOnly);
 
-    // 🎤 Voice-to-Text
     voiceBtn.addEventListener("mousedown", startListening);
     voiceBtn.addEventListener("mouseup", stopListening);
     voiceBtn.addEventListener("touchstart", startListening);
@@ -323,6 +361,8 @@
         }
       }
     }
+
+    updateUsageNotice(); // show usage on load
   </script>
 </body>
 </html>
