@@ -15,6 +15,7 @@
       align-items: center;
       padding-bottom: 40px;
     }
+
     header {
       background-color: #004080;
       color: white;
@@ -26,6 +27,7 @@
       letter-spacing: 1px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+
     #container {
       display: flex;
       flex-direction: row;
@@ -37,6 +39,7 @@
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
+
     #controls {
       width: 40%;
       background: #004080;
@@ -47,10 +50,12 @@
       flex-direction: column;
       gap: 16px;
     }
+
     #controls label {
       font-weight: bold;
       font-size: 14px;
     }
+
     #controls select,
     #controls input[type="text"] {
       width: 100%;
@@ -60,6 +65,7 @@
       border: none;
       margin-top: 4px;
     }
+
     #controls button {
       font-size: 16px;
       padding: 12px;
@@ -69,17 +75,21 @@
       cursor: pointer;
       transition: 0.2s;
     }
+
     #controls button:hover {
       opacity: 0.9;
     }
+
     #sendBtn { background: #ffb300; color: white; }
     #clearBtn { background: #ff7043; color: white; }
     #voiceBtn { background: #4caf50; color: white; }
     #stopBtn { background: #d32f2f; color: white; }
     #pauseBtn { background: #1976d2; color: white; }
+
     #voiceBtn.recording {
       background-color: #c62828 !important;
     }
+
     #chatArea {
       width: 60%;
       padding: 20px;
@@ -91,6 +101,7 @@
       gap: 10px;
       background: #f9f9f9;
     }
+
     .message {
       max-width: 80%;
       padding: 14px 18px;
@@ -99,16 +110,19 @@
       line-height: 1.5;
       box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
+
     .user {
       align-self: flex-start;
       background-color: #e0f7fa;
       border-top-left-radius: 0;
     }
+
     .ai {
       align-self: flex-end;
       background-color: #fff3e0;
       border-top-right-radius: 0;
     }
+
     @media screen and (max-width: 768px) {
       #container {
         flex-direction: column;
@@ -121,6 +135,7 @@
 </head>
 <body>
   <header>🎓 AI Homework Helper</header>
+
   <div id="container">
     <div id="controls">
       <div>
@@ -130,6 +145,7 @@
           <option value="spanish">Español</option>
         </select>
       </div>
+
       <div>
         <label for="responseLang">🔊 Response Language:</label>
         <select id="responseLang">
@@ -137,6 +153,7 @@
           <option value="spanish">Español</option>
         </select>
       </div>
+
       <input type="text" id="userInput" placeholder="Type your question here..." />
       <button id="sendBtn" onclick="sendMessage()">📨 Send</button>
       <button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
@@ -145,6 +162,7 @@
       <button id="pauseBtn" onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
       <div id="usageNotice" style="font-weight:bold;"></div>
     </div>
+
     <div id="chatArea"></div>
   </div>
 
@@ -208,16 +226,7 @@
       } else if (left > 0) {
         notice.textContent = `🆓 Free messages left: ${left}`;
       } else {
-        notice.innerHTML = `
-          🔒 Limit reached. 
-          <a href="https://buy.stripe.com/5kAeW0f9vbki8ww8ww" style="color: #ffeb3b; font-weight: bold;" target="_blank">
-            Click here to upgrade
-          </a>.
-          After payment, return to 
-          <a href="https://aihomeworktutor.com/?paid=true" style="color: #fff; text-decoration: underline;" target="_blank">
-            this page
-          </a> to unlock unlimited access.
-        `;
+        notice.innerHTML = `🔒 Limit reached. <a href="https://buy.stripe.com/5kAeW0f9vbki8ww8ww" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
       }
     }
 
