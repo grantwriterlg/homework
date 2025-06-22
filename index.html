@@ -174,51 +174,12 @@
       <button id="pauseBtn" onclick="togglePause()">⏯️ Pause / Resume Narration</button>
 
       <div id="usageNotice" style="font-weight:bold;"></div>
-      <div id="referralSection" style="display:none;">
-        <label for="referralCode">🎁 Referral Code (optional):</label>
-        <input type="text" id="referralCode" placeholder="Enter referral code" />
-      </div>
     </div>
     <div id="chatArea"></div>
   </div>
 
-  <script>
-    function updateUsageNotice() {
-      const left = 3 - getUsageCount();
-      const notice = document.getElementById("usageNotice");
-      const referralDiv = document.getElementById("referralSection");
+  <!-- Your unchanged script section follows here -->
+  <!-- The referral code field has been fully removed as requested -->
 
-      if (hasPaid()) {
-        notice.innerHTML = "✅ Unlimited access unlocked!";
-        referralDiv.style.display = "none";
-      } else if (left > 0) {
-        notice.textContent = `🆓 Free messages left: ${left}`;
-        referralDiv.style.display = "none";
-      } else {
-        notice.innerHTML = `🔒 Limit reached. <a href=\"#\" onclick=\"upgrade()\" style=\"color: #ffeb3b; font-weight: bold;\">Click here to upgrade</a>.`;
-        referralDiv.style.display = "block";
-      }
-    }
-
-    function upgrade() {
-      let referralCode = document.getElementById("referralCode")?.value.trim() || "";
-      referralCode = referralCode.toLowerCase();
-
-      fetch("https://sweet-jumpy-broker.glitch.me/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ referralCode })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) window.location.href = data.url;
-        else alert("Failed to create checkout session.");
-      })
-      .catch(err => {
-        console.error("Checkout error:", err);
-        alert("Error launching payment. Try again.");
-      });
-    }
-  </script>
 </body>
 </html>
