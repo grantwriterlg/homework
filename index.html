@@ -268,7 +268,7 @@
 
     async function sendMessage() {
       if (!hasPaid() && getUsageCount() >= 3) {
-        const confirmUpgrade = confirm("🎓 You've used your 3 free messages. Upgrade to unlock unlimited access for $9.95/month?");
+        const confirmUpgrade = confirm("🎓 You've used your 3 free messages. Upgrade to unlock unlimited access for $9.95/year?");
         if (confirmUpgrade) upgrade();
         return;
       }
