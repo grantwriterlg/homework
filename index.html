@@ -4,18 +4,26 @@
   <meta charset="UTF-8" />
   <title>AI Homework Helper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Favicon for bookmarks & tabs -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
   <link rel="shortcut icon" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
   <link rel="apple-touch-icon" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
+
+  <!-- ✅ Open Graph Meta Tags (for social media sharing) -->
   <meta property="og:title" content="AI Homework Helper" />
   <meta property="og:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta property="og:image" content="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
   <meta property="og:url" content="https://aihomeworktutor.com" />
   <meta property="og:type" content="website" />
+
+  <!-- ✅ Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AI Homework Helper" />
   <meta name="twitter:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta name="twitter:image" content="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
+
+  <!-- ✅ Google Ads Global Site Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16844538130"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -23,7 +31,11 @@
     gtag('js', new Date());
     gtag('config', 'AW-16844538130');
   </script>
+
+  <!-- ✅ Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- ✅ Your CSS (unchanged) -->
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
@@ -34,6 +46,7 @@
       align-items: center;
       padding-bottom: 40px;
     }
+
     header {
       background-color: #004080;
       color: white;
@@ -45,6 +58,7 @@
       letter-spacing: 1px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+
     #container {
       display: flex;
       flex-direction: row;
@@ -56,6 +70,7 @@
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
+
     #controls {
       width: 40%;
       background: #004080;
@@ -66,10 +81,12 @@
       flex-direction: column;
       gap: 16px;
     }
+
     #controls label {
       font-weight: bold;
       font-size: 14px;
     }
+
     #controls select,
     #controls input[type="text"] {
       width: 100%;
@@ -80,6 +97,7 @@
       margin-top: 4px;
       box-sizing: border-box;
     }
+
     #controls button {
       font-size: 16px;
       padding: 12px;
@@ -89,15 +107,21 @@
       cursor: pointer;
       transition: 0.2s;
     }
+
     #controls button:hover {
       opacity: 0.9;
     }
+
     #sendBtn { background: #ffb300; color: white; }
     #clearBtn { background: #ff7043; color: white; }
     #voiceBtn { background: #4caf50; color: white; }
     #stopBtn { background: #d32f2f; color: white; }
     #pauseBtn { background: #1976d2; color: white; }
-    #voiceBtn.recording { background-color: #c62828 !important; }
+
+    #voiceBtn.recording {
+      background-color: #c62828 !important;
+    }
+
     #chatArea {
       width: 60%;
       padding: 20px;
@@ -109,6 +133,7 @@
       gap: 10px;
       background: #f9f9f9;
     }
+
     .message {
       max-width: 80%;
       padding: 14px 18px;
@@ -117,30 +142,36 @@
       line-height: 1.5;
       box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
-    .user { align-self: flex-start; background-color: #e0f7fa; border-top-left-radius: 0; }
-    .ai { align-self: flex-end; background-color: #fff3e0; border-top-right-radius: 0; }
+
+    .user {
+      align-self: flex-start;
+      background-color: #e0f7fa;
+      border-top-left-radius: 0;
+    }
+
+    .ai {
+      align-self: flex-end;
+      background-color: #fff3e0;
+      border-top-right-radius: 0;
+    }
+
     @media screen and (max-width: 768px) {
-      #container { flex-direction: column; }
-      #controls, #chatArea { width: 100%; }
-    }
-    #referralContainer {
-      display: none;
-      flex-direction: column;
-    }
-    #referralInput {
-      margin-top: 4px;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
+      #container {
+        flex-direction: column;
+      }
+      #controls, #chatArea {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/botnowords.png?v=1750572180596" alt="AI Robot" style="height: 28px; vertical-align: middle; margin-right: 10px;" />
-    AI Homework Helper
-  </header>
+  <img src="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/botnowords.png?v=1750572180596" alt="AI Robot" style="height: 28px; vertical-align: middle; margin-right: 10px;" />
+  AI Homework Helper
+</header>
+
+
   <div id="container">
     <div id="controls">
       <div>
@@ -150,31 +181,27 @@
           <option value="spanish">Español</option>
         </select>
       </div>
+
       <div>
         <label for="responseLang">🔊 Response Language:</label>
         <select id="responseLang">
           <option value="english">English</option>
           <option value="spanish">Español</option>
         </select>
-      </div>
+</div>
 
-      <input type="text" id="userInput" placeholder="Type your question here..." />
-      <button id="sendBtn" onclick="sendMessage()">➤ Send</button>
-      <button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
+<input type="text" id="userInput" placeholder="Type your question here..." />
+<button id="sendBtn" onclick="sendMessage()">➤ Send</button>
+<button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
 
-      <p style="margin: 10px 0 0; font-size: 14px; font-weight: bold; color: #fff;">Voice Features Web Browser Only</p>
-      <button id="voiceBtn">🎙️ Speak (Hold)</button>
-      <button id="stopBtn" onclick="stopSpeaking()">🔇 Stop Narration</button>
-      <button id="pauseBtn" onclick="togglePause()">⏯️ Pause / Resume Narration</button>
+<!-- Voice Input & Output Section -->
+<p style="margin: 10px 0 0; font-size: 14px; font-weight: bold; color: #fff;">Voice Features Web Browser Only</p>
+<button id="voiceBtn">🎙️ Speak (Hold)</button>
+<button id="stopBtn" onclick="stopSpeaking()">🔇 Stop Narration</button>
+<button id="pauseBtn" onclick="togglePause()">⏯️ Pause / Resume Narration</button>
 
-      <!-- Referral Input (hidden until triggered) -->
-      <div id="referralContainer">
-        <label for="referralInput">Referral Code (optional):</label>
-        <input type="text" id="referralInput" placeholder="Enter referral code" />
-      </div>
-
-      <div id="usageNotice" style="font-weight:bold;"></div>
-    </div>
+<div id="usageNotice" style="font-weight:bold;"></div>
+</div>
 
     <div id="chatArea"></div>
   </div>
@@ -182,8 +209,6 @@
   <script>
     const messages = document.getElementById("chatArea");
     const voiceBtn = document.getElementById("voiceBtn");
-    const referralContainer = document.getElementById("referralContainer");
-    const referralInput = document.getElementById("referralInput");
     let recognition;
     let isPausedManually = false;
     let lastInputWasVoice = false;
@@ -247,7 +272,6 @@
       } else if (left > 0) {
         notice.textContent = `🆓 Free messages left: ${left}`;
       } else {
-        referralContainer.style.display = "flex";
         notice.innerHTML = `🔒 Limit reached. <a href="#" onclick="upgrade()" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
       }
     }
@@ -349,8 +373,15 @@
       function speakNow() {
         const utter = new SpeechSynthesisUtterance(text);
         utter.lang = resLang.code;
-        const voice = synth.getVoices().find(v => v.lang === resLang.code) || synth.getVoices().find(v => v.lang.startsWith(resLang.code.split("-")[0]));
+
+        let voice = synth.getVoices().find(v => v.lang === resLang.code);
+        if (!voice) {
+          voice = synth.getVoices().find(v => v.lang.startsWith(resLang.code.split("-")[0]));
+        }
+
         if (voice) utter.voice = voice;
+        else console.warn("No voice found for", resLang.code);
+
         synth.cancel();
         isPausedManually = false;
         synth.speak(utter);
@@ -371,17 +402,19 @@
     function togglePause() {
       const synth = window.speechSynthesis;
       if (synth.speaking) {
-        if (synth.paused) synth.resume();
-        else synth.pause();
+        if (synth.paused) {
+          synth.resume();
+          isPausedManually = false;
+        } else {
+          synth.pause();
+          isPausedManually = true;
+        }
       }
     }
 
     function upgrade() {
-      const referral = referralInput.value.trim().toLowerCase();
       fetch("https://sweet-jumpy-broker.glitch.me/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ referral })
+        method: "POST"
       })
       .then(res => res.json())
       .then(data => {
@@ -394,7 +427,7 @@
       });
     }
 
-    updateUsageNotice();
+    updateUsageNotice(); // Show usage on load
   </script>
 </body>
 </html>
