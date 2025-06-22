@@ -183,8 +183,6 @@
   </div>
 
   <script>
-    // ... your unchanged code above this remains the same
-
     function updateUsageNotice() {
       const left = 3 - getUsageCount();
       const notice = document.getElementById("usageNotice");
@@ -197,7 +195,7 @@
         notice.textContent = `🆓 Free messages left: ${left}`;
         referralDiv.style.display = "none";
       } else {
-        notice.innerHTML = `🔒 Limit reached. <a href="#" onclick="upgrade()" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
+        notice.innerHTML = `🔒 Limit reached. <a href=\"#\" onclick=\"upgrade()\" style=\"color: #ffeb3b; font-weight: bold;\">Click here to upgrade</a>.`;
         referralDiv.style.display = "block";
       }
     }
