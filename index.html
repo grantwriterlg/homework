@@ -177,16 +177,20 @@
           <option value="english">English</option>
           <option value="spanish">Español</option>
         </select>
-      </div>
+</div>
 
-      <input type="text" id="userInput" placeholder="Type your question here..." />
-      <button id="sendBtn" onclick="sendMessage()">📨 Send</button>
-      <button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
-      <button id="voiceBtn">🎙️ Hold to Speak, Web Browser Only</button>
-      <button id="stopBtn" onclick="stopSpeaking()">🛑 Stop Speaking</button>
-      <button id="pauseBtn" onclick="togglePause()">⏸️ Pause / ▶️ Resume</button>
-      <div id="usageNotice" style="font-weight:bold;"></div>
-    </div>
+<input type="text" id="userInput" placeholder="Type your question here..." />
+<button id="sendBtn" onclick="sendMessage()">➤ Send</button>
+<button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
+
+<!-- Voice Input & Output Section -->
+<p style="margin: 10px 0 0; font-size: 14px; font-weight: bold; color: #fff;">Voice Features</p>
+<button id="voiceBtn">🎙️ Speak (Hold)</button>
+<button id="stopBtn" onclick="stopSpeaking()">🔇 Stop Narration</button>
+<button id="pauseBtn" onclick="togglePause()">⏯️ Pause / Resume Voice</button>
+
+<div id="usageNotice" style="font-weight:bold;"></div>
+</div>
 
     <div id="chatArea"></div>
   </div>
