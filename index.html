@@ -171,10 +171,10 @@
   AI Homework Helper
 </header>
 
-<div style="background:#fff8e1; width:100%; text-align:center; padding:12px 20px; font-weight:bold; font-size:16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-  🎓 Get Unlimited Homework Help – Only $9.95/year
-  <a href="#" onclick="upgrade()" style="margin-left:12px; padding:6px 14px; background:#ffb300; color:white; border-radius:4px; text-decoration:none;">Upgrade Now</a>
+<div id="upgradeBanner" style="background:#fff8e1; width:100%; text-align:center; padding:12px 20px; font-weight:bold; font-size:16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+  <!-- Filled by JavaScript -->
 </div>
+
 
   <div id="container">
     <div id="controls">
@@ -261,12 +261,15 @@
       return !!localStorage.getItem("accessToken");
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const tokenFromUrl = urlParams.get("token");
-    if (tokenFromUrl) {
-      localStorage.setItem("accessToken", tokenFromUrl);
-      window.history.replaceState(null, "", window.location.pathname);
-    }
+const urlParams = new URLSearchParams(window.location.search);
+const tokenFromUrl = urlParams.get("token");
+if (tokenFromUrl) {
+  localStorage.setItem("accessToken", tokenFromUrl);
+  updateUsageNotice();      // ✅ update usage notice immediately
+  updateUpgradeBanner();    // ✅ update banner immediately
+  window.history.replaceState(null, "", window.location.pathname); // clean URL
+}
+
 
     function updateUsageNotice() {
       const left = 3 - getUsageCount();
@@ -279,6 +282,17 @@
         notice.innerHTML = `🔒 Limit reached. <a href="#" onclick="upgrade()" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
       }
     }
+function updateUpgradeBanner() {
+  const banner = document.getElementById("upgradeBanner");
+  if (!banner) return;
+
+  if (hasPaid()) {
+    banner.innerHTML = "✅ Unlimited access unlocked!";
+  } else {
+    banner.innerHTML = `🎓 Get Unlimited Homework Help – Only $9.95/year
+      <a href="#" onclick="upgrade()" style="margin-left:12px; padding:6px 14px; background:#ffb300; color:white; border-radius:4px; text-decoration:none;">Upgrade Now</a>`;
+  }
+}
 
     async function sendMessage() {
       if (!hasPaid() && getUsageCount() >= 3) {
@@ -432,6 +446,8 @@
     }
 
     updateUsageNotice(); // Show usage on load
+updateUpgradeBanner(); // Show correct banner on load
+
   </script>
 </body>
 </html>
