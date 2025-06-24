@@ -2,40 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Homework Helper</title>
+  <title>AI Homework Helper – Access the World's Knowledge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ✅ Favicon for bookmarks & tabs -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
-  <link rel="shortcut icon" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
-  <link rel="apple-touch-icon" href="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
-
-  <!-- ✅ Open Graph Meta Tags (for social media sharing) -->
-  <meta property="og:title" content="AI Homework Helper" />
+  <meta property="og:title" content="AI Homework Helper – Access the World's Knowledge" />
   <meta property="og:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta property="og:image" content="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
   <meta property="og:url" content="https://aihomeworktutor.com" />
   <meta property="og:type" content="website" />
-
-  <!-- ✅ Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="AI Homework Helper" />
+  <meta name="twitter:title" content="AI Homework Helper – Access the World's Knowledge" />
   <meta name="twitter:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta name="twitter:image" content="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/aihomeworktutor.png?v=1750570437842" />
-
-  <!-- ✅ Google Ads Global Site Tag -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16844538130"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-16844538130');
-  </script>
-
-  <!-- ✅ Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- ✅ Your CSS (unchanged) -->
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
@@ -53,10 +32,17 @@
       padding: 20px 40px;
       text-align: center;
       width: 100%;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 600;
-      letter-spacing: 1px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+
+    header span {
+      display: block;
+      font-size: 14px;
+      font-weight: normal;
+      opacity: 0.85;
     }
 
     #container {
@@ -114,13 +100,6 @@
 
     #sendBtn { background: #ffb300; color: white; }
     #clearBtn { background: #ff7043; color: white; }
-    #voiceBtn { background: #4caf50; color: white; }
-    #stopBtn { background: #d32f2f; color: white; }
-    #pauseBtn { background: #1976d2; color: white; }
-
-    #voiceBtn.recording {
-      background-color: #c62828 !important;
-    }
 
     #chatArea {
       width: 60%;
@@ -132,6 +111,8 @@
       flex-direction: column;
       gap: 10px;
       background: #f9f9f9;
+      border-left: 2px solid #ddd;
+      position: relative;
     }
 
     .message {
@@ -167,14 +148,12 @@
 </head>
 <body>
   <header>
-  <img src="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/botnowords.png?v=1750572180596" alt="AI Robot" style="height: 28px; vertical-align: middle; margin-right: 10px;" />
-  AI Homework Helper
-</header>
+    <img src="https://cdn.glitch.global/68cd9f3a-8052-495f-a265-5cd0917d421b/botnowords.png?v=1750572180596" alt="AI Robot" style="height: 28px; vertical-align: middle; margin-right: 10px;" />
+    AI Homework Helper
+    <span>Access the World's Knowledge</span>
+  </header>
 
-<div id="upgradeBanner" style="background:#fff8e1; width:100%; text-align:center; padding:12px 20px; font-weight:bold; font-size:16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-  <!-- Filled by JavaScript -->
-</div>
-
+  <div id="upgradeBanner" style="background:#fff8e1; width:100%; text-align:center; padding:12px 20px; font-weight:bold; font-size:16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"></div>
 
   <div id="container">
     <div id="controls">
@@ -192,39 +171,31 @@
           <option value="english">English</option>
           <option value="spanish">Español</option>
         </select>
-</div>
+      </div>
 
-<input type="text" id="userInput" placeholder="Type your question here..." />
-<button id="sendBtn" onclick="sendMessage()">➤ Send</button>
-<button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
+      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <button id="sendBtn" onclick="sendMessage()">➤ Send</button>
+      <button id="clearBtn" onclick="clearChat()">🧹 Clear Chat</button>
 
-<!-- Voice Input & Output Section -->
-<p style="margin: 10px 0 0; font-size: 14px; font-weight: bold; color: #fff;">Voice Features Web Browser Only</p>
-<button id="voiceBtn">🎙️ Speak (Hold)</button>
-<button id="stopBtn" onclick="stopSpeaking()">🔇 Stop Narration</button>
-<button id="pauseBtn" onclick="togglePause()">⏯️ Pause / Resume Narration</button>
+      <div id="usageNotice" style="font-weight:bold;"></div>
+    </div>
 
-<div id="usageNotice" style="font-weight:bold;"></div>
-</div>
-
-    <div id="chatArea"></div>
+    <div id="chatArea">
+      <div id="chatPlaceholder" style="text-align:center; color:#999; font-style:italic; margin-top:40px;">
+        Your conversation will appear here 👇<br />Scroll down to view responses on mobile.
+      </div>
+    </div>
   </div>
 
   <script>
     const messages = document.getElementById("chatArea");
-    const voiceBtn = document.getElementById("voiceBtn");
-    let recognition;
-    let isPausedManually = false;
-    let lastInputWasVoice = false;
-
-    const langMap = {
-      english: { code: "en-US", name: "English" },
-      spanish: { code: "es-ES", name: "Spanish" }
-    };
-
     let chatHistory = [];
 
     function getLang(id) {
+      const langMap = {
+        english: { code: "en-US", name: "English" },
+        spanish: { code: "es-ES", name: "Spanish" }
+      };
       return langMap[document.getElementById(id).value];
     }
 
@@ -239,11 +210,19 @@
     resetChatHistory();
 
     function addMessage(text, role) {
+      const placeholder = document.getElementById("chatPlaceholder");
+      if (placeholder) placeholder.style.display = "none";
+
       const msg = document.createElement("div");
       msg.className = "message " + role;
       msg.textContent = text;
       messages.appendChild(msg);
       messages.scrollTop = messages.scrollHeight;
+    }
+
+    function clearChat() {
+      messages.innerHTML = '<div id="chatPlaceholder" style="text-align:center; color:#999; font-style:italic; margin-top:40px;">Your conversation will appear here 👇<br />Scroll down to view responses on mobile.</div>';
+      resetChatHistory();
     }
 
     function getUsageCount() {
@@ -261,15 +240,14 @@
       return !!localStorage.getItem("accessToken");
     }
 
-const urlParams = new URLSearchParams(window.location.search);
-const tokenFromUrl = urlParams.get("token");
-if (tokenFromUrl) {
-  localStorage.setItem("accessToken", tokenFromUrl);
-  updateUsageNotice();      // ✅ update usage notice immediately
-  updateUpgradeBanner();    // ✅ update banner immediately
-  window.history.replaceState(null, "", window.location.pathname); // clean URL
-}
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get("token");
+    if (tokenFromUrl) {
+      localStorage.setItem("accessToken", tokenFromUrl);
+      updateUsageNotice();
+      updateUpgradeBanner();
+      window.history.replaceState(null, "", window.location.pathname);
+    }
 
     function updateUsageNotice() {
       const left = 3 - getUsageCount();
@@ -279,24 +257,24 @@ if (tokenFromUrl) {
       } else if (left > 0) {
         notice.textContent = `🆓 Free messages left: ${left}`;
       } else {
-        notice.innerHTML = `🔒 Limit reached. <a href="#" onclick="upgrade()" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade</a>.`;
+        notice.innerHTML = `🔒 Limit reached. <a href="#" onclick="upgrade()" style="color: #ffeb3b; font-weight: bold;">Click here to upgrade for $69.95/year</a>.`;
       }
     }
-function updateUpgradeBanner() {
-  const banner = document.getElementById("upgradeBanner");
-  if (!banner) return;
 
-  if (hasPaid()) {
-    banner.innerHTML = "✅ Unlimited access unlocked!";
-  } else {
-    banner.innerHTML = `🎓 Get Unlimited Homework Help – Only $9.95/year
-      <a href="#" onclick="upgrade()" style="margin-left:12px; padding:6px 14px; background:#ffb300; color:white; border-radius:4px; text-decoration:none;">Upgrade Now</a>`;
-  }
-}
+    function updateUpgradeBanner() {
+      const banner = document.getElementById("upgradeBanner");
+      if (!banner) return;
+      if (hasPaid()) {
+        banner.innerHTML = "✅ Unlimited access unlocked!";
+      } else {
+        banner.innerHTML = `🎓 Get Unlimited Homework Help – Only $69.95/year
+        <a href="#" onclick="upgrade()" style="margin-left:12px; padding:6px 14px; background:#ffb300; color:white; border-radius:4px; text-decoration:none;">Upgrade Now</a>`;
+      }
+    }
 
     async function sendMessage() {
       if (!hasPaid() && getUsageCount() >= 3) {
-        const confirmUpgrade = confirm("🎓 You've used your 3 free messages. Upgrade to unlock unlimited access for $9.95/year?");
+        const confirmUpgrade = confirm("🎓 You've used your 3 free messages. Upgrade to unlock unlimited access for $69.95/year?");
         if (confirmUpgrade) upgrade();
         return;
       }
@@ -325,20 +303,13 @@ function updateUpgradeBanner() {
         const reply = data.reply;
 
         addMessage(reply, "ai");
-        if (lastInputWasVoice) speak(reply);
         chatHistory.push({ role: "assistant", content: reply });
-        lastInputWasVoice = false;
 
         incrementUsage();
       } catch (err) {
         console.error("Error:", err);
         addMessage("Something went wrong. Please try again.", "ai");
       }
-    }
-
-    function clearChat() {
-      messages.innerHTML = "";
-      resetChatHistory();
     }
 
     function updatePromptOnly() {
@@ -349,86 +320,6 @@ function updateUpgradeBanner() {
 
     document.getElementById("inputLang").addEventListener("change", updatePromptOnly);
     document.getElementById("responseLang").addEventListener("change", updatePromptOnly);
-
-    voiceBtn.addEventListener("mousedown", startListening);
-    voiceBtn.addEventListener("mouseup", stopListening);
-    voiceBtn.addEventListener("touchstart", startListening);
-    voiceBtn.addEventListener("touchend", stopListening);
-
-    function startListening() {
-      lastInputWasVoice = true;
-      const inputLang = getLang("inputLang");
-      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = inputLang.code;
-      recognition.interimResults = false;
-
-      recognition.onresult = function (event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById("userInput").value = transcript;
-        sendMessage();
-      };
-
-      recognition.onerror = function (event) {
-        console.error("Voice error:", event.error);
-        addMessage("Voice error: " + event.error, "ai");
-      };
-
-      voiceBtn.classList.add("recording");
-      recognition.start();
-    }
-
-    function stopListening() {
-      if (recognition) {
-        recognition.stop();
-        voiceBtn.classList.remove("recording");
-      }
-    }
-
-    function speak(text) {
-      const resLang = getLang("responseLang");
-      const synth = window.speechSynthesis;
-
-      function speakNow() {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = resLang.code;
-
-        let voice = synth.getVoices().find(v => v.lang === resLang.code);
-        if (!voice) {
-          voice = synth.getVoices().find(v => v.lang.startsWith(resLang.code.split("-")[0]));
-        }
-
-        if (voice) utter.voice = voice;
-        else console.warn("No voice found for", resLang.code);
-
-        synth.cancel();
-        isPausedManually = false;
-        synth.speak(utter);
-      }
-
-      if (synth.getVoices().length === 0) {
-        synth.onvoiceschanged = () => speakNow();
-      } else {
-        speakNow();
-      }
-    }
-
-    function stopSpeaking() {
-      window.speechSynthesis.cancel();
-      isPausedManually = false;
-    }
-
-    function togglePause() {
-      const synth = window.speechSynthesis;
-      if (synth.speaking) {
-        if (synth.paused) {
-          synth.resume();
-          isPausedManually = false;
-        } else {
-          synth.pause();
-          isPausedManually = true;
-        }
-      }
-    }
 
     function upgrade() {
       fetch("https://sweet-jumpy-broker.glitch.me/create-checkout-session", {
@@ -445,9 +336,8 @@ function updateUpgradeBanner() {
       });
     }
 
-    updateUsageNotice(); // Show usage on load
-updateUpgradeBanner(); // Show correct banner on load
-
+    updateUsageNotice();
+    updateUpgradeBanner();
   </script>
 </body>
 </html>
