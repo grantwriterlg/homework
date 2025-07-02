@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,6 +145,29 @@
         width: 100%;
       }
     }
+.partial-blur {
+  position: relative;
+  overflow: hidden;
+  max-height: 140px;
+  filter: blur(2px);
+}
+
+.partial-blur::after {
+  content: "🔍 Partial preview – Upgrade for full access";
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 12px;
+  text-align: center;
+  color: #d32f2f;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 6px;
+  z-index: 1;
+}
+
   </style>
 </head>
 <body>
@@ -210,15 +234,25 @@
     resetChatHistory();
 
     function addMessage(text, role) {
-      const placeholder = document.getElementById("chatPlaceholder");
-      if (placeholder) placeholder.style.display = "none";
+  const placeholder = document.getElementById("chatPlaceholder");
+  if (placeholder) placeholder.style.display = "none";
 
-      const msg = document.createElement("div");
-      msg.className = "message " + role;
-      msg.textContent = text;
-      messages.appendChild(msg);
-      messages.scrollTop = messages.scrollHeight;
+  const msg = document.createElement("div");
+  msg.className = "message " + role;
+
+  // Add partial blur to first 3 free AI messages (teaser effect)
+  if (role === "ai") {
+    const usage = getUsageCount();
+    if (!hasPaid() && usage < 3) {
+      msg.classList.add("partial-blur");
     }
+  }
+
+  msg.textContent = text;
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
+}
+
 
     function clearChat() {
       messages.innerHTML = '<div id="chatPlaceholder" style="text-align:center; color:#999; font-style:italic; margin-top:40px;">Your conversation will appear here 👇<br />Scroll down to view responses on mobile.</div>';
