@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,29 +144,29 @@
         width: 100%;
       }
     }
-.partial-blur {
-  position: relative;
-  overflow: hidden;
-  max-height: 140px;
-  filter: blur(2px);
-}
 
-.partial-blur::after {
-  content: "🔍 Partial preview – Upgrade for full access";
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px 12px;
-  text-align: center;
-  color: #d32f2f;
-  font-weight: bold;
-  font-size: 14px;
-  border-radius: 6px;
-  z-index: 1;
-}
+    .partial-blur {
+      position: relative;
+      overflow: hidden;
+      max-height: 140px;
+      filter: blur(2px);
+    }
 
+    .partial-blur::after {
+      content: "🔍 Partial preview – Upgrade for full access";
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 8px 12px;
+      text-align: center;
+      color: #d32f2f;
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 6px;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
@@ -181,21 +180,17 @@
 
   <div id="container">
     <div id="controls">
-      <div>
-        <label for="inputLang">🗣️ Speak/Type Language:</label>
-        <select id="inputLang">
-          <option value="english">English</option>
-          <option value="spanish">Español</option>
-        </select>
-      </div>
+      <label for="inputLang">🗣️ Speak/Type Language:</label>
+      <select id="inputLang">
+        <option value="english">English</option>
+        <option value="spanish">Español</option>
+      </select>
 
-      <div>
-        <label for="responseLang">🔊 Response Language:</label>
-        <select id="responseLang">
-          <option value="english">English</option>
-          <option value="spanish">Español</option>
-        </select>
-      </div>
+      <label for="responseLang">🔊 Response Language:</label>
+      <select id="responseLang">
+        <option value="english">English</option>
+        <option value="spanish">Español</option>
+      </select>
 
       <input type="text" id="userInput" placeholder="Type your question here..." />
       <button id="sendBtn" onclick="sendMessage()">➤ Send</button>
@@ -234,25 +229,21 @@
     resetChatHistory();
 
     function addMessage(text, role) {
-  const placeholder = document.getElementById("chatPlaceholder");
-  if (placeholder) placeholder.style.display = "none";
+      const placeholder = document.getElementById("chatPlaceholder");
+      if (placeholder) placeholder.style.display = "none";
 
-  const msg = document.createElement("div");
-  msg.className = "message " + role;
+      const msg = document.createElement("div");
+      msg.className = "message " + role;
 
-  // Add partial blur to first 3 free AI messages (teaser effect)
-  if (role === "ai") {
-    const usage = getUsageCount();
-    if (!hasPaid() && usage < 3) {
-      msg.classList.add("partial-blur");
+      const usage = getUsageCount();
+      if (role === "ai" && !hasPaid() && usage < 3) {
+        msg.classList.add("partial-blur");
+      }
+
+      msg.textContent = text;
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
     }
-  }
-
-  msg.textContent = text;
-  messages.appendChild(msg);
-  messages.scrollTop = messages.scrollHeight;
-}
-
 
     function clearChat() {
       messages.innerHTML = '<div id="chatPlaceholder" style="text-align:center; color:#999; font-style:italic; margin-top:40px;">Your conversation will appear here 👇<br />Scroll down to view responses on mobile.</div>';
@@ -324,8 +315,7 @@
         const token = localStorage.getItem("accessToken");
         const usage = getUsageCount();
 
-        const response = await fetch("https://homework-backend.edj4000.repl.co/homework", {
-
+        const response = await fetch("https://d37f7f77-4c73-411c-8ccc-833094bb4924-00-1q9nk75tjdg32.picard.replit.dev/homework", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -347,18 +337,8 @@
       }
     }
 
-    function updatePromptOnly() {
-      if (chatHistory.length > 0 && chatHistory[0].role === "system") {
-        chatHistory[0].content = getSystemPrompt();
-      }
-    }
-
-    document.getElementById("inputLang").addEventListener("change", updatePromptOnly);
-    document.getElementById("responseLang").addEventListener("change", updatePromptOnly);
-
     function upgrade() {
-      fetch("https://homework-backend.edj4000.repl.co/create-checkout-session", {
-
+      fetch("https://d37f7f77-4c73-411c-8ccc-833094bb4924-00-1q9nk75tjdg32.picard.replit.dev/create-checkout-session", {
         method: "POST"
       })
       .then(res => res.json())
