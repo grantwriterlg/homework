@@ -1,8 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>AI Homework Helper – Access the World's Knowledge</title>
-  <title>Grossmont Career Services – Support Students</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- Icons & Metadata -->
@@ -11,38 +11,22 @@
   <meta property="og:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta property="og:image" content="https://homework-backend-edj4000.replit.app/thumbnails_aihomeworktutor.png" />
   <meta property="og:url" content="https://aihomeworktutor.com" />
-
-  <!-- Social preview meta tags -->
-  <meta property="og:title" content="Grossmont Career Services" />
-  <meta property="og:site_name" content="Grossmont College - Career Center" />
-  <meta property="og:description" content="Support Grossmont Career Services and help students reach their career goals." />
-  <meta property="og:url" content="https://grantwriterlg.github.io/careers/" />
-  <meta property="og:image" content="https://grantwriterlg.github.io/careers/unnamed.jpg" />
   <meta property="og:type" content="website" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AI Homework Helper – Access the World's Knowledge" />
   <meta name="twitter:description" content="Instant AI-powered homework help, tutoring, and more." />
   <meta name="twitter:image" content="https://homework-backend-edj4000.replit.app/thumbnails_aihomeworktutor.png" />
-  <meta name="twitter:title" content="Grossmont Career Services" />
-  <meta name="twitter:description" content="Support Grossmont Career Services and help students reach their career goals." />
-  <meta name="twitter:image" content="https://grantwriterlg.github.io/careers/unnamed.jpg" />
-
-  <link rel="icon" type="image/png" href="unnamed.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(to bottom right, #f8f9fa, #eef5ff);
       margin: 0;
       background: linear-gradient(to right, #f0f9ff, #fff7ed);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-bottom: 40px;
-      padding: 40px 20px;
     }
 
     header {
@@ -74,7 +58,6 @@
       background: white;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      margin-bottom: 40px;
     }
 
     #controls {
@@ -86,27 +69,15 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-    header img {
-      max-height: 140px;
-      margin-bottom: 15px;
     }
 
     #controls label {
       font-weight: bold;
       font-size: 14px;
-    h1 {
-      color: #004080;
-      font-weight: 600;
     }
 
     #controls select,
     #controls input[type="text"] {
-    .donation-card {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      padding: 30px;
-      max-width: 480px;
       width: 100%;
       padding: 10px;
       font-size: 16px;
@@ -175,7 +146,6 @@
       #controls, #chatArea {
         width: 100%;
       }
-      text-align: center;
     }
 
     .partial-blur {
@@ -183,11 +153,6 @@
       overflow: hidden;
       max-height: 140px;
       filter: blur(2px);
-    .btn-amount {
-      width: 100%;
-      font-size: 1.3rem;
-      padding: 14px;
-      border-radius: 8px;
     }
 
     .partial-blur::after {
@@ -198,16 +163,12 @@
       right: 10px;
       background: rgba(255, 255, 255, 0.95);
       padding: 8px 12px;
-    footer {
       text-align: center;
       color: #d32f2f;
       font-weight: bold;
       font-size: 14px;
       border-radius: 6px;
       z-index: 1;
-      margin-top: 40px;
-      color: #777;
-      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -216,9 +177,6 @@
     <img src="https://homework-backend-edj4000.replit.app/thumbnails_botnowords.png" alt="AI Robot" style="height: 28px; vertical-align: middle; margin-right: 10px;" />
     AI Homework Helper
     <span>Access the World's Knowledge</span>
-    <img src="unnamed.jpg" alt="Grossmont College Career Services Logo" />
-    <h1>Grossmont Career Services</h1>
-    <p>Support our students and programs through your generous donation.</p>
   </header>
 
   <div id="upgradeBanner" style="background:#fff8e1; width:100%; text-align:center; padding:12px 20px; font-weight:bold; font-size:16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"></div>
@@ -249,10 +207,6 @@
         Your conversation will appear here 👇<br />Scroll down to view responses on mobile.
       </div>
     </div>
-  <div class="donation-card">
-    <a href="https://buy.stripe.com/fZu8wQeyjaYTgQ648VgQE0b" target="_blank" class="btn btn-primary btn-amount">
-      Donate to Grossmont Career Services
-    </a>
   </div>
 
   <script>
@@ -404,8 +358,5 @@
     updateUsageNotice();
     updateUpgradeBanner();
   </script>
-  <footer>
-    <p>Grossmont College Career Center<br>8800 Grossmont College Drive, El Cajon, CA</p>
-  </footer>
 </body>
 </html>
